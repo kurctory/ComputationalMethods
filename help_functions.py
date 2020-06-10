@@ -4,7 +4,11 @@ import math
 from sympy import diff
 import sympy as sp
 from sympy import re
+from sympy import plot_implicit, Eq
+import matplotlib.pyplot as plt
 x_var = sp.symbols('x')
+
+
 def newton_coefs(x, y):
     n = len(x)
     for j in range(1, n):
@@ -128,3 +132,23 @@ def divided_differences2(nodes, values, max_order, derivatives=None):
                 current_diffs.append(derivatives[order + 1][i] / math.factorial(order + 1))
         diffs.append(current_diffs)
     return diffs
+
+
+def first_order_deriv_1(x, y, h):
+    return np.array([(y[i] - y[i - 1]) / h for i in range(1, len(x))] + [0])
+
+
+def first_order_deriv_2(x, y, h):
+    return np.array([0] + [(y[i] - y[i - 2]) / (2*h) for i in range(2, len(x))] + [0])
+
+
+def second_order_deriv(x, y, h):
+    return np.array([0] + [(y[i+1] - 2 * y[i] + y[i - 1]) / (h ** 2)
+                           for i in range(1, len(x) - 1)] + [0])
+
+
+def true_first_order_deriv(x):
+    return np.array([2 * np.exp(2 * p) for p in x])
+
+def true_second_order_deriv(x):
+    return np.array([4 * np.exp(2 * p) for p in x])
